@@ -14,12 +14,12 @@ type Provider interface {
 	GetPortForward(client *http.Client) (port uint16, err error)
 }
 
-func New(provider models.VPNProvider, allServers models.AllServers) Provider {
+func New(provider models.VPNProvider, allServers models.AllServers, username, password string) Provider {
 	switch provider {
 	case constants.PrivateInternetAccess:
 		return newPrivateInternetAccessV3(allServers.Pia.Servers)
 	case constants.PrivateInternetAccessOld:
-		return newPrivateInternetAccessV4(allServers.PiaOld.Servers)
+		return newPrivateInternetAccessV4(allServers.PiaOld.Servers, username, password)
 	case constants.Mullvad:
 		return newMullvad(allServers.Mullvad.Servers)
 	case constants.Windscribe:
